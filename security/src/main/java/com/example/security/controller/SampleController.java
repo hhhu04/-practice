@@ -15,7 +15,7 @@ public class SampleController {
             model.addAttribute("message","customer");
         }
         else {
-            model.addAttribute("message", "hi");
+            model.addAttribute("message", "hi "+principal.getName());
         }
         return "index";
     }
@@ -28,13 +28,13 @@ public class SampleController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal){
-        model.addAttribute("message","hi"+principal.getName());
+        model.addAttribute("message","hi "+principal.getName());
         return "dashboard";
     }
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal){
-        model.addAttribute("message","hi admin"+principal.getName());
+        model.addAttribute("message","hi admin "+principal.getName());
         return "admin";
     }
 }
