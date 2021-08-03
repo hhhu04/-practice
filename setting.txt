@@ -1,1 +1,0 @@
-리파지토리 변경 - git remote set-url origin <새로운GITURL>
