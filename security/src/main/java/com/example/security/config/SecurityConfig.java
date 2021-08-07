@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Configuration
 @EnableWebSecurity
@@ -19,12 +21,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/signup").permitAll()
                 .mvcMatchers("/admin").hasRole("ADMIN")
                 .mvcMatchers("/account/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin();
+                .mvcMatchers("/dashboard").authenticated()
+                .anyRequest().permitAll()
+                .and();
         http.httpBasic();
+        http.formLogin()
+//                .loginPage("/login")
+                ;
 
         http.logout().logoutSuccessUrl("/");
+
+        http.sessionManagement()
+                .invalidSessionUrl("/login")
+                .maximumSessions(1);
+
+        http.exceptionHandling()
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    String username = principal.getUsername();
+                    System.out.println(username + " is denied to access " + request.getRequestURI());
+                    response.sendRedirect("/access-denied");
+                });
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.security.service;
 
 import com.example.security.account.Account;
+import com.example.security.account.UserAccount;
 import com.example.security.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.convert.ReadingConverter;
@@ -26,11 +27,7 @@ public class AccountService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
-        return User.builder()
-                .username(account.getUsername())
-                .password(account.getPassword())
-                .roles(account.getRole())
-                .build();
+        return new UserAccount(account);
     }
 
 

@@ -37,4 +37,13 @@ public class SampleController {
         model.addAttribute("message","hi admin "+principal.getName());
         return "admin";
     }
+
+
+    @GetMapping("/access-denied")
+    public String accessDenied(Principal principal,Model model){
+        model.addAttribute("name",principal.getName());
+        return "access-denied";
+    }
+
+
 }
